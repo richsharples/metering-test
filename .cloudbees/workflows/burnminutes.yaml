@@ -1,0 +1,23 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: BurnMinutes
+
+on:
+  push:
+    branches:
+      - '**'
+jobs:
+  burn01:
+    steps:
+      - name: Burn
+        uses: docker://golang:1.20.3-alpine3.17
+        env:
+          MINS: ${{ vars.JobMinsToBurn }}
+        shell: sh
+        run: |
+          for (( i=1 ; i<=$MINS ; i++ )); 
+          do
+            echo $i
+            sleep 60
+          done
+          echo "----------"
